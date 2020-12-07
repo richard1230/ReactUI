@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/richard1230/webpack-test/issues"
   },
-  "homepage": "https://github.com/richard1230/webpack-test#readme"
+  "homepage": "https://github.com/richard1230/webpack-test#readme",
+  "devDependencies": {
+    "awesome-typescript-loader": "^5.2.1",
+    "typescript": "^4.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
+  }
 }

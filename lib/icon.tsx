@@ -1,7 +1,11 @@
 import React from "react";
-import wechat from "../icons/wechat.svg"
+import  "./icons/wechat.svg"
+import  "./icons/alipay.svg"
+import  "./icons/qq.svg"
 
-console.log(wechat);
+
+
+
 
 interface IconProps {
     name: string
@@ -12,7 +16,17 @@ interface IconProps {
 // interface FunctionComponent<P = {}>
 const Icon:React.FunctionComponent<IconProps> = (props)=>{
     return (
-        <span>{props.name}</span>
+        <span>
+            <svg>
+                <use xlinkHref="#wechat"></use>
+            </svg>
+            <svg>
+                <use xlinkHref="#alipay"></use>
+            </svg>
+            <svg>
+                <use xlinkHref="#qq"></use>
+            </svg>
+        </span>
     )
 }
 

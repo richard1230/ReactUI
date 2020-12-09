@@ -18,14 +18,9 @@ const Icon:React.FunctionComponent<IconProps> = (props)=>{
     return (
         <span>
             <svg>
-                <use xlinkHref="#wechat"></use>
+                <use xlinkHref={`#${props.name}`}/>
             </svg>
-            <svg>
-                <use xlinkHref="#alipay"></use>
-            </svg>
-            <svg>
-                <use xlinkHref="#qq"></use>
-            </svg>
+
         </span>
     )
 }

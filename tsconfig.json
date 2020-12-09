@@ -23,6 +23,8 @@
     "noUnusedLocals": true
   },
   "include": [
+    //lib目录下面的所有东西是归ts所管理的
+    "lib/**/*"
   ],
   "exclude": [
     "node_modules",

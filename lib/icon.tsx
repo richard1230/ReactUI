@@ -5,6 +5,7 @@ import './icon.scss';
 
 interface IconProps {
     name: string
+    onClick: ()=>void
 }
 
 //如何申明一个函数组件接受的props类型
@@ -12,7 +13,7 @@ interface IconProps {
 // interface FunctionComponent<P = {}>
 const Icon: React.FunctionComponent<IconProps> = (props) => {
     return (
-        <svg className="fui-icon">
+        <svg className="fui-icon" onClick={props.onClick}>
             <use xlinkHref={`#${props.name}`}/>
         </svg>
 

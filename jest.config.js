@@ -1,10 +1,12 @@
 module.exports = {
     verbose: true,
     clearMocks: false,
-    // collectCoverage: false,
+    // 最重要的就是下面这5行
     reporters: ["default"],
     collectCoverage: true,
+    //测试那个目录下面的代码，以及那些是不测的(就是！后面的)
     collectCoverageFrom: ["lib/**/*.{ts,tsx}", "!**/node_modules/**"],
+    //生成的相关文档放在coverage目录下面
     coverageDirectory: 'coverage',
     coverageReporters: ['text', 'lcov'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],

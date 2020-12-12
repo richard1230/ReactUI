@@ -1,11 +1,10 @@
 {
   "name": "richardui888",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "dist/lib/index",
   "types": "dist/lib/index",
-  "files":
-  [
+  "files": [
     "/dist/**/*"
   ],
   "scripts": {

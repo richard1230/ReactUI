@@ -1,2 +1,2 @@
-npm version $1
+npm version patch
 git push

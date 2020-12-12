@@ -53,6 +53,7 @@ jobs:
       #      将build那一步里面持久化的dist目录copy到这里
       - attach_workspace:
           at: .
+      - run: npm config set //registry.npmjs.org/:_authToken $npm_token
       - run: npm publish
 
 

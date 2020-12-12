@@ -31,15 +31,31 @@ jobs:
           root: .
           paths:
             - dist
+            - package.json
+            - LICENSE
+            - README.md
+
+
   test:
     <<: *defaults
     steps:
       - checkout
       - attach_workspace:
           at: .
+      - run: ls -la
       - run: yarn ci
       - store_test_results:
           path: test-results
+
+  publish:
+    <<: *defaults
+    steps:
+      #      将build那一步里面持久化的dist目录copy到这里
+      - attach_workspace:
+          at: .
+      - run: npm publish
+
+
 
 workflows:
   version: 2
@@ -52,4 +68,7 @@ workflows:
       - test:
           requires:
             - prepare
+      - publish:
+          requires:
+            - build
 

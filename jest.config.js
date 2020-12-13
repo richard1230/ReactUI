@@ -2,13 +2,13 @@ module.exports = {
     verbose: true,
     clearMocks: false,
     // 最重要的就是下面这5行
-    reporters: ["default","jest-junit"],
-    collectCoverage: true,
+    reporters: ["default"],
+    collectCoverage: false,
     //测试那个目录下面的代码，以及那些是不测的(就是！后面的)
-    collectCoverageFrom: ["lib/**/*.{ts,tsx}", "!**/node_modules/**"],
+    // collectCoverageFrom: ["lib/**/*.{ts,tsx}", "!**/node_modules/**"],
     //生成的相关文档放在coverage目录下面
-    coverageDirectory: 'coverage',
-    coverageReporters: ['text', 'lcov'],
+    // coverageDirectory: 'coverage',
+    // coverageReporters: ['text', 'lcov'],
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
     moduleDirectories: ['node_modules'],
     globals: {

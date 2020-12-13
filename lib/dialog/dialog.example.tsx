@@ -5,7 +5,9 @@ export default ()=>{
     return(
         <div>
             <button onClick={()=>setX(!x)}>click</button>
-            <Dialog visible={x}/>
+            <Dialog visible={x}>
+                <strong>hi</strong>
+            </Dialog>
         </div>
     )
 }

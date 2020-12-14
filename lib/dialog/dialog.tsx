@@ -26,7 +26,7 @@ const Dialog: React.FunctionComponent<Props> = (props) => {
         }
     }
 
-    const x = props.visible ?
+    const result = props.visible ?
         <Fragment>
             <div className={sc('mask')} onClick={onClickMask}>
             </div>
@@ -53,7 +53,7 @@ const Dialog: React.FunctionComponent<Props> = (props) => {
         </Fragment>
         : null
     return (
-        ReactDOM.createPortal(x, document.body)
+        ReactDOM.createPortal(result, document.body)
     )
 }
 
@@ -61,7 +61,7 @@ Dialog.defaultProps = {
     closeOnClickMask: false
 }
 
-const alert = (content: string) => {
+const x = (content:ReactNode,buttons?: Array<ReactElement>)=>{
     const onClose = () => {
         //重新渲染组件，同时改一下visible
         ReactDOM.render(React.cloneElement(component, {visible: false}), div);
@@ -72,7 +72,7 @@ const alert = (content: string) => {
     }
     const component = <Dialog
         visible={true}
-        buttons={[<button onClick={onClose}>OK</button>]}
+        buttons={buttons}
         onClose={onClose}>
         {content}
     </Dialog>
@@ -81,63 +81,35 @@ const alert = (content: string) => {
     document.body.append(div)
     //div里面塞一个组件
     ReactDOM.render(component, div)
+    return onClose;
+}
+
+const alert = (content: string) => {
+    const button = <button onClick={()=>close()}>OK</button>
+    //函数返回操作这个函数内部的api
+    const close = x(content,[button])
+
 }
 
 const confirm = (content: string, yes?: () => void, no?: () => void) => {
     const onYes = () => {
-        ReactDOM.render(React.cloneElement(component, {visible: false}), div);
-        //从div上面卸载掉这个组件
-        ReactDOM.unmountComponentAtNode(div)
-        //删除div
-        div.remove()
+        close();
         yes && yes()
     }
     const onNo = () => {
-        ReactDOM.render(React.cloneElement(component, {visible: false}), div);
-        //从div上面卸载掉这个组件
-        ReactDOM.unmountComponentAtNode(div)
-        //删除div
-        div.remove()
+        close();
         no && no()
     }
-    const component = <Dialog onClose={onNo}
-                              visible={true}
-                              buttons={
-                                  [
-                                      <button onClick={onYes}>yes</button>,
-                                      <button onClick={onNo}>no</button>
-                                  ]
-                              }>
-        {content}
-    </Dialog>;
-    const div = document.createElement('div')
-    document.body.append(div)
-    //div里面塞一个组件
-    ReactDOM.render(component, div)
-
+    const buttons = [
+        <button onClick={onYes}>yes</button>,
+        <button onClick={onNo}>no</button>
+    ]
+    //函数返回操作这个函数内部的api
+    const close = x(content, buttons)
 
 };
 const modal = (content: ReactNode | ReactFragment) => {
-    const onClose = () => {
-        ReactDOM.render(React.cloneElement(component, {visible: false}), div);
-        //从div上面卸载掉这个组件
-        ReactDOM.unmountComponentAtNode(div)
-        //删除div
-        div.remove()
-    }
-    const component = <Dialog
-        onClose={onClose}
-        visible={true}>
-        {content}
-    </Dialog>
-
-    const div = document.createElement('div')
-    document.body.append(div)
-    //div里面塞一个组件
-    ReactDOM.render(component, div)
-
-    return onClose;
-
+    return x(content);
 };
 export {alert, confirm, modal}
 

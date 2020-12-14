@@ -1,9 +1,10 @@
-import React, {Fragment} from "react";
+import React, {Fragment, ReactElement} from "react";
 import './dialog.scss'
 import {Icon} from "../index";
 
 interface Props {
-    visible: boolean
+    visible: boolean,
+    buttons: Array<ReactElement>
 }
 
 
@@ -18,6 +19,7 @@ const sc = scopedClass;
 
 const Dialog: React.FunctionComponent<Props> = (props) => {
     return (
+        props.visible?
         <Fragment>
             <div className={sc('mask')}>
             </div>
@@ -33,12 +35,12 @@ const Dialog: React.FunctionComponent<Props> = (props) => {
                     {props.children}
                 </main>
                 <footer className={sc("footer")}>
-                    <button>ok</button>
-                    <button>cancel</button>
+                    {props.buttons}
                 </footer>
             </div>
 
         </Fragment>
+        :null
 
 
     )

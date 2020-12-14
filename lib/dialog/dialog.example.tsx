@@ -10,7 +10,7 @@ export default ()=>{
                     <button onClick={()=>{setX(false);}}>1</button>,
                     <button onClick={()=>{setX(false);}}>2</button>
                 ]
-            }>
+            } onClose={()=>{setX(false);}}>
                 <strong>hi</strong>
             </Dialog>
         </div>

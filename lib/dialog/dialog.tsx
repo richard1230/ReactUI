@@ -1,4 +1,4 @@
-import React, {Fragment, ReactElement, ReactFragment, ReactNode} from "react";
+import React, {Fragment, ReactElement,  ReactNode} from "react";
 import './dialog.scss'
 import {Icon} from "../index";
 import scopedClassMaker from '../classes'
@@ -61,8 +61,8 @@ Dialog.defaultProps = {
     closeOnClickMask: false
 }
 
-const x = (content:ReactNode,buttons?: Array<ReactElement>)=>{
-    const onClose = () => {
+const modal = (content:ReactNode,buttons?: Array<ReactElement>,afterClose?: () => void)=>{
+    const close = () => {
         //重新渲染组件，同时改一下visible
         ReactDOM.render(React.cloneElement(component, {visible: false}), div);
         //从div上面卸载掉这个组件
@@ -73,7 +73,9 @@ const x = (content:ReactNode,buttons?: Array<ReactElement>)=>{
     const component = <Dialog
         visible={true}
         buttons={buttons}
-        onClose={onClose}>
+        onClose={()=>{
+            close();afterClose && afterClose()
+        }}>
         {content}
     </Dialog>
     //动态地创建一个div,而后div里面塞一个组件
@@ -81,13 +83,13 @@ const x = (content:ReactNode,buttons?: Array<ReactElement>)=>{
     document.body.append(div)
     //div里面塞一个组件
     ReactDOM.render(component, div)
-    return onClose;
+    return close;
 }
 
 const alert = (content: string) => {
     const button = <button onClick={()=>close()}>OK</button>
     //函数返回操作这个函数内部的api
-    const close = x(content,[button])
+    const close = modal(content,[button])
 
 }
 
@@ -105,12 +107,10 @@ const confirm = (content: string, yes?: () => void, no?: () => void) => {
         <button onClick={onNo}>no</button>
     ]
     //函数返回操作这个函数内部的api
-    const close = x(content, buttons)
+    const close = modal(content, buttons,no)
 
 };
-const modal = (content: ReactNode | ReactFragment) => {
-    return x(content);
-};
+
 export {alert, confirm, modal}
 
 export default Dialog;

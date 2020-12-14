@@ -1,6 +1,8 @@
-import React, {Fragment, ReactElement} from "react";
+import React, {Fragment,  ReactElement} from "react";
 import './dialog.scss'
 import {Icon} from "../index";
+import scopedClassMaker from '../classes'
+import ReactDOM from "react-dom";
 
 interface Props {
     visible: boolean,
@@ -10,11 +12,7 @@ interface Props {
 }
 
 
-function scopedClassMaker(prefix: string) {
-    return function x(name?: string) {
-        return [prefix, name].filter(Boolean).join('-');
-    };
-}
+
 
 const scopedClass = scopedClassMaker('fui-dialog');
 const sc = scopedClass;
@@ -29,18 +27,18 @@ const Dialog: React.FunctionComponent<Props> = (props) => {
             props.onClose(e);
         }
     }
-    return (
-        props.visible?
+
+    const x =  props.visible?
         <Fragment>
             <div className={sc('mask')} onClick={onClickMask}>
             </div>
 
             <div className={sc()}>
                 <div className={sc("close")} onClick={onClickClose}>
-                  <Icon name="close"/>
+                    <Icon name="close"/>
                 </div>
                 <header className={sc("header")}>
-                   提示
+                    提示
                 </header>
                 <main className={sc("main")}>
                     {props.children}
@@ -53,8 +51,8 @@ const Dialog: React.FunctionComponent<Props> = (props) => {
 
         </Fragment>
         :null
-
-
+    return (
+      ReactDOM.createPortal(x,document.body)
     )
 }
 

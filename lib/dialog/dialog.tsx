@@ -1,4 +1,4 @@
-import React, {Fragment, ReactElement,  ReactNode} from "react";
+import React, {Fragment, ReactElement, ReactNode} from "react";
 import './dialog.scss'
 import {Icon} from "../index";
 import scopedClassMaker from '../classes'
@@ -49,7 +49,6 @@ const Dialog: React.FunctionComponent<Props> = (props) => {
                     </footer>
                 }
             </div>
-
         </Fragment>
         : null
     return (
@@ -61,7 +60,7 @@ Dialog.defaultProps = {
     closeOnClickMask: false
 }
 
-const modal = (content:ReactNode,buttons?: Array<ReactElement>,afterClose?: () => void)=>{
+const modal = (content: ReactNode, buttons?: Array<ReactElement>, afterClose?: () => void) => {
     const close = () => {
         //重新渲染组件，同时改一下visible
         ReactDOM.render(React.cloneElement(component, {visible: false}), div);
@@ -73,8 +72,9 @@ const modal = (content:ReactNode,buttons?: Array<ReactElement>,afterClose?: () =
     const component = <Dialog
         visible={true}
         buttons={buttons}
-        onClose={()=>{
-            close();afterClose && afterClose()
+        onClose={() => {
+            close();
+            afterClose && afterClose()
         }}>
         {content}
     </Dialog>
@@ -87,9 +87,9 @@ const modal = (content:ReactNode,buttons?: Array<ReactElement>,afterClose?: () =
 }
 
 const alert = (content: string) => {
-    const button = <button onClick={()=>close()}>OK</button>
+    const button = <button onClick={() => close()}>OK</button>
     //函数返回操作这个函数内部的api
-    const close = modal(content,[button])
+    const close = modal(content, [button])
 
 }
 
@@ -107,7 +107,7 @@ const confirm = (content: string, yes?: () => void, no?: () => void) => {
         <button onClick={onNo}>no</button>
     ]
     //函数返回操作这个函数内部的api
-    const close = modal(content, buttons,no)
+    const close = modal(content, buttons, no)
 
 };
 

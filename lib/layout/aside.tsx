@@ -1,5 +1,5 @@
 import React from 'react'
-import scopedClassMaker from "../classes";
+import {scopedClassMaker} from "../helpers/classes";
 
 const sc = scopedClassMaker('gu-layout')
 
@@ -10,7 +10,7 @@ const  Aside: React.FunctionComponent<Props> = (props) => {
     const {className, ...rest}= props;
     return (
         <div className={sc('aside',{extra:className})} {...rest}>
-            aside
+        aside
         </div>
     )
 };

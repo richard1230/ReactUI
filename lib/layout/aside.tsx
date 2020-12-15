@@ -1,8 +1,17 @@
 import React from 'react'
+import scopedClassMaker from "../classes";
 
-const Aside: React.FunctionComponent = () => {
+const sc = scopedClassMaker('gu-layout')
+
+interface Props extends React.HTMLAttributes<HTMLElement>{
+}
+
+const  Aside: React.FunctionComponent<Props> = (props) => {
+    const {className, ...rest}= props;
     return (
-        <div>x</div>
+        <div className={sc('aside',{extra:className})} {...rest}>
+            aside
+        </div>
     )
 };
 

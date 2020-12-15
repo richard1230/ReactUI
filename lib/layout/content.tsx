@@ -3,9 +3,15 @@ import scopedClassMaker from "../classes";
 
 const sc = scopedClassMaker('gu-layout')
 
-const Content: React.FunctionComponent = () => {
+//继承了HTMLAttributes这个对象，后面用Layout组件的时候就可以接受classname和style了
+interface Props extends React.HTMLAttributes<HTMLElement>{
+
+}
+
+const Content: React.FunctionComponent<Props> = (props) => {
+    const {className, ...rest}= props;
     return (
-        <div className={sc('content')}>
+        <div className={sc('content',{extra:className})} {...rest}>
             content
         </div>
     )

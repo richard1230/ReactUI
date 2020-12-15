@@ -15,13 +15,13 @@ const Layout: React.FunctionComponent<Props> = (props) => {
 
 
     const childrenasArray = props.children as Array<ReactElement>;
-    const hasAside = childrenasArray.length &&
+    const hasAside ='length' in childrenasArray&&
         childrenasArray.reduce((result, node) =>
                 (result || node.type == Aside)
             , false)
     //reduce(1,2):1为回调，2为初始值
     return (
-        <div className={sc('', {extra: [className, hasAside && 'hasAside'].join(' ')})} {...rest}>
+        <div className={sc({'':true,hasAside:hasAside}, {extra: className})} {...rest}>
             {props.children}
         </div>
     );

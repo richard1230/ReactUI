@@ -7,16 +7,16 @@ import DialogExample from './lib/dialog/dialog.example'
 import LayoutExample from './lib/layout/layout.example'
 import {Layout, Aside, Header, Content, Footer} from './lib/layout/layout';
 import './example.scss';
+// @ts-ignore
+import logo from './logo.png'
 
-const logo = require('./logo.png');
-console.log(logo);
-console.log('i am coming');
+// const logo = require('./logo.png');
 ReactDOM.render(
     <Router>
         <Layout className="site-page">
             <Header className="site-header">
                 <div className="logo">
-                    <img src={logo} width="47" height="47" alt=""/>
+                    <img src={logo} width="40" height="40" alt=""/>
                     <span> RUI </span>
                 </div>
 

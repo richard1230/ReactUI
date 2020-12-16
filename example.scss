@@ -5,8 +5,11 @@ ul, ol {list-style: none;}
 h1, h2, h3, h4, h5, h6 {font-weight: normal;}
 a { text-decoration: none; color: inherit; }
 $padding: 16px;
-$main-color: #000000;
+$main-color: #e6f7ff;
 $border-color: #eee;
+body {
+  font-size: 16px;
+}
 .site-page {
   background: #ffffff;
 }
@@ -14,7 +17,8 @@ $border-color: #eee;
   padding-top: 16px;
 }
 .site-header {
-  background: $border-color;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   padding: 8px 0;
   .logo {
     padding: 0 $padding;
@@ -22,7 +26,7 @@ $border-color: #eee;
     align-items: center;
     > img {margin-right: 8px;}
     > span {
-      color: $main-color;
+      color: rgba(0, 0, 0, .65);
       font-size: 32px;
     }
   }
@@ -35,12 +39,19 @@ $border-color: #eee;
     font-size: 18px;
   }
   ul {
-    padding: 0 $padding;
     min-width: 12em;
     > li {
-      padding: 8px 0;
       a {
-        color: $main-color;
+        color: #333;
+        display: block;
+        padding: 8px $padding;
+        &:hover {
+          color: #1890ff;
+        }
+        &.active {
+          color: #40a9ff;
+          background: $main-color;
+        }
       }
     }
   }

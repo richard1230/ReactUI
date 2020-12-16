@@ -16,19 +16,22 @@ interface ClassToggles {
 function scopedClassMaker(prefix: string) {
     return function (name: string | ClassToggles, options?: Options) {
 
-        const name2 = (typeof name === 'string' || name === undefined)?{[name]:name}:name;
+        const namesObject = (typeof name === 'string' || name === undefined)?{[name]:name}:name;
 
 
-        const name3 = Object.entries(name2).filter(k => k[1]!==false).map(kv => kv[0])
 
-       const result = name3.map(name =>
-            [prefix, name].filter(Boolean).join('-')
-        ).join(' ')
+       const scoped = Object.
+                entries(namesObject).
+                filter(k => k[1]!==false).
+                 map(kv => kv[0]).
+                 map(name => [prefix, name].
+                 filter(Boolean).join('-'))
+                 .join(' ')
 
         if (options && options.extra) {
-            return [result, options && options.extra].filter(Boolean).join(' ');
+            return [scoped, options && options.extra].filter(Boolean).join(' ');
         } else {
-            return result;
+            return scoped;
         }
     };
 }

@@ -16,17 +16,12 @@ interface ClassToggles {
 function scopedClassMaker(prefix: string) {
     return function (name: string | ClassToggles, options?: Options) {
 
-        let name2;
-        let result;
-        if (typeof name === 'string' || name === undefined) {
-            name2 = {[name]:name}
-        } else {//此时为name为ClassToggles类型
-            name2 = name;
-        }
+        const name2 = (typeof name === 'string' || name === undefined)?{[name]:name}:name;
+
 
         const name3 = Object.entries(name2).filter(k => k[1]!==false).map(kv => kv[0])
 
-        result = name3.map(name =>
+       const result = name3.map(name =>
             [prefix, name].filter(Boolean).join('-')
         ).join(' ')
 

@@ -23,6 +23,7 @@
     "noUnusedLocals": true
   },
   "include": [
+    "lib/types/custom.d.ts",
     //lib目录下面的所有东西是归ts所管理的
     "lib/**/*"
   ],

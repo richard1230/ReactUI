@@ -78,10 +78,8 @@ const modal = (content: ReactNode, buttons?: Array<ReactElement>, afterClose?: (
         }}>
         {content}
     </Dialog>
-    //动态地创建一个div,而后div里面塞一个组件
     const div = document.createElement('div')
     document.body.append(div)
-    //div里面塞一个组件
     ReactDOM.render(component, div)
     return close;
 }
@@ -108,7 +106,6 @@ const confirm = (content: string, yes?: () => void, no?: () => void) => {
     ]
     //函数返回操作这个函数内部的api
     const close = modal(content, buttons, no)
-
 };
 
 export {alert, confirm, modal}

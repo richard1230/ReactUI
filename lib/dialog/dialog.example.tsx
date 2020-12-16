@@ -19,6 +19,19 @@ export default () => {
                 <h1>example 4</h1>
                 <button onClick={openModal}>modal</button>
             </div>
+
+            <div>
+                <h1>example 3</h1>
+                <button onClick={() => alert('1')}>alert</button>
+                <button onClick={() => confirm('1', () => {
+                    console.log('点击了yes');
+                }, () => {
+                    console.log('点击了no');
+                })}
+                >confirm
+                </button>
+            </div>
+
             <div style={{position: 'relative', zIndex: 10, border: '1px solid red', color: 'red'}}>
                 <h1>example 1</h1>
                 <button onClick={() => setX(!x)}>click</button>
@@ -55,20 +68,7 @@ export default () => {
                     <strong>hi</strong>
                 </Dialog>
             </div>
-            <div>
-                <h1>example 3</h1>
-                <button onClick={() => alert('1')}>alert</button>
-                <button onClick={() => confirm('1', () => {
-                    console.log('yes');
-                }, () => {
-                    console.log('no');
-                })}
-                >confirm
-                </button>
-                <button onClick={() => modal(<h1>你好</h1>)}>
-                    modal
-                </button>
-            </div>
+
 
         </div>
 

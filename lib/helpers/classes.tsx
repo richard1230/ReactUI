@@ -19,13 +19,12 @@ function scopedClassMaker(prefix: string) {
         let name2;
         let result;
         if (typeof name === 'string' || name === undefined) {
-            name2 = name;
-            result = [prefix, name2].filter(Boolean).join('-')
+            result = [prefix, name].filter(Boolean).join('-')
         } else {//此时为name为ClassToggles类型
             name2 = Object.entries(name).filter(k => k[1]).map(kv => kv[0]);
 
-            result = name2.map(n => {
-                return [prefix, n].filter(Boolean).join('-');
+            result = name2.map(name => {
+                return [prefix, name].filter(Boolean).join('-');
             }).join(' ')
         }
 

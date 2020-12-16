@@ -19,7 +19,7 @@ function scopedClassMaker(prefix: string) {
         let name2;
         let result;
         if (typeof name === 'string' || name === undefined) {
-            name2 = [name]
+            name2 = Object.entries([{name:name}]).filter(k => k[1]).map(kv => kv[0])
 
         } else {//此时为name为ClassToggles类型
             name2 = Object.entries(name).filter(k => k[1]).map(kv => kv[0]);

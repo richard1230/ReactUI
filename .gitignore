@@ -26,3 +26,5 @@ yarn-error.log*
 /dist/*
 close8080port.sh
 /test-results/
+/doc/
+

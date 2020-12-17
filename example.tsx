@@ -6,7 +6,6 @@ import DialogExample from './lib/dialog/dialog.example'
 import LayoutExample from './lib/layout/layout.example'
 import {Layout, Aside, Header, Content, Footer} from './lib/layout/layout';
 import './example.scss';
-// @ts-ignore
 // import logo from './logo.png'
 import IconDemo from './lib/icon/icon.demo';
 
@@ -17,7 +16,7 @@ ReactDOM.render(
         <Layout className="site-page">
             <Header className="site-header">
                 <div className="logo">
-                    <img src={require('./logo.png').default} width="50" height="50" alt=""/>
+                    <img src={require('./logo.png').default} width="45" height="45" alt=""/>
                     <span> RUI </span>
                 </div>
 

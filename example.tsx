@@ -6,8 +6,10 @@ import DialogExample from './lib/dialog/dialog.example'
 import LayoutExample from './lib/layout/layout.example'
 import {Layout, Aside, Header, Content, Footer} from './lib/layout/layout';
 import './example.scss';
-// import logo from './logo.png'
+// import logo from './lo˝o.png'
 import IconDemo from './lib/icon/icon.demo';
+import {Icon} from "./lib";
+import FormExample from "./lib/form/form.example";
 
 
 // const logo = require('./logo.png');
@@ -16,7 +18,8 @@ ReactDOM.render(
         <Layout className="site-page">
             <Header className="site-header">
                 <div className="logo">
-                    <img src={require('./logo.png').default} width="45" height="45" alt=""/>
+                    {/*<img src={require('./logo.png').default} width="45" height="45" alt=""/>*/}
+                    <Icon name="xue"/>
                     <span> RUI </span>
                 </div>
 
@@ -30,11 +33,11 @@ ReactDOM.render(
                                 Icon
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/button">
-                                Button
-                            </NavLink>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <NavLink to="/button">*/}
+                        {/*        Button*/}
+                        {/*    </NavLink>*/}
+                        {/*</li>*/}
                         <li>
                             <NavLink to="/dialog">
                                 对话框
@@ -45,6 +48,12 @@ ReactDOM.render(
                                 布局
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/form">
+                                表单
+                            </NavLink>
+                        </li>
+
                     </ul>
                 </Aside>
                 <Content className="site-main">
@@ -52,6 +61,7 @@ ReactDOM.render(
                     <Route path="/button" component={ButtonExample}/>
                     <Route path="/dialog" component={DialogExample}/>
                     <Route path="/layout" component={LayoutExample}/>
+                    <Route path="/form" component={FormExample}/>
                 </Content>
             </Layout>
             <Footer className="site-footer">

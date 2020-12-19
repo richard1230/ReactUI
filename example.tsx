@@ -6,7 +6,7 @@ import DialogExample from './lib/dialog/dialog.example'
 import LayoutExample from './lib/layout/layout.example'
 import {Layout, Aside, Header, Content, Footer} from './lib/layout/layout';
 import './example.scss';
-// import logo from './lo˝o.png'
+// import logo from './logo.png'
 import IconDemo from './lib/icon/icon.demo';
 import {Icon} from "./lib";
 import FormExample from "./lib/form/form.example";

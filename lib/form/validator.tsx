@@ -19,6 +19,11 @@ function isEmpty(value:any) {
 }
 
 
+//没有key就说明没有错误
+export function noError(errors: any) {
+    return Object.keys(errors).length === 0;
+}
+
 
 
 const Validator = (formValue:FormValue,rules:FormRules):FormErrors=>{

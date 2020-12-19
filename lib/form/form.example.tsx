@@ -18,7 +18,9 @@ const FormExample:React.FunctionComponent=()=>{
         // axios.post('/signIn',formData).then(success,fail)
         // console.log(formData);
         const rules = [
-            {key:'username',required:true}
+            {key:'username',required:true},
+            {key:'username',minLength:8,maxLength:16}
+
         ];
         const errors = Validator(formData,rules);
         console.log(errors);

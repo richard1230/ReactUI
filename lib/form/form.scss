@@ -1,18 +1,15 @@
 .fui-form{
-  &-row{
-    margin-top: 24px;
-    margin-bottom: 24px;
-    &:first-child{
-      margin-top: 0;
-    }
-    &:last-child{
-      margin-bottom: 0;
-    }
+
+  &-td{
+    margin-top: 0px;
+    margin-bottom: 32px;
   }
-  //&-label{
-  //  width: 4em;
-  //  //https://blog.csdn.net/piaoxuan1987/article/details/46289243
-  //  display: inline-block;
-  //}
+
+  &-tr:last-child &-td{
+    padding-bottom: 0;
+  }
+  &-td + &-td{
+    padding-left: 16px;
+  }
 
 }

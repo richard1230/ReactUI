@@ -1,8 +1,17 @@
 .fui-form{
 
+  &-table{
+    border-collapse: collapse;
+  }
+
+  &-label{
+    line-height: 32px;
+  }
   &-td{
     margin-top: 0px;
-    margin-bottom: 32px;
+    margin-bottom: 8px;
+    vertical-align: top;
+    //position: relative;
   }
 
   &-tr:last-child &-td{
@@ -10,6 +19,12 @@
   }
   &-td + &-td{
     padding-left: 16px;
+  }
+
+  &-error{
+    color: red;
+    font-size: 0.8em;
+    margin-top: 4px;
   }
 
 }

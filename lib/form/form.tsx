@@ -14,7 +14,8 @@ interface Props {
     buttons: ReactFragment;
     onSubmit: React.FormEventHandler;
     onChange: (value: FormValue) => void;
-    errors: { [K: string]: string[] }
+    errors: { [K: string]: string[] };
+    errorsDisplayMode:'first' | 'all'
 }
 
 const Form: React.FunctionComponent<Props> = (props) => {
@@ -29,9 +30,8 @@ const Form: React.FunctionComponent<Props> = (props) => {
     const formData = props.value
     return (
         <form onSubmit={onSubmit}>
-            <table>
+            <table className="fui-form-table">
                 {props.fields.map(f =>
-
                     <tr className={classes('fui-form-tr')} key={f.name}>
                         <td className="fui-form-td">
                           <span className="fui-form-label">
@@ -44,7 +44,15 @@ const Form: React.FunctionComponent<Props> = (props) => {
                                    value={formData[f.name]}
                                    onChange={(e) => onInputChange(f.name, e.target.value)}
                             />
-                            <div>{props.errors[f.name]}</div>
+                            {/*{JSON.stringify(props.errors)}*/}
+                            <div className="fui-form-error">
+                                {
+                                    props.errors[f.name] ?
+                                        (props.errorsDisplayMode ==='first' ?
+                                            props.errors[f.name][0]:props.errors[f.name].join('-')):
+                                        <span>&nbsp;</span>
+                                }
+                            </div>
                         </td>
                     </tr>
                 )}
@@ -59,5 +67,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
         </form>
     )
 }
-
+Form.defaultProps={
+    errorsDisplayMode:'first'
+}
 export default Form;

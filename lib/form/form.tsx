@@ -48,6 +48,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
                         </td>
                     </tr>
                 )}
+                {/*//这个地方的tr,td保证了button与上面的两个input对齐*/}
                 <tr className="fui-form-tr">
                     <td className="fui-form-td"/>
                     <td className="fui-form-td">

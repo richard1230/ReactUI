@@ -15,7 +15,8 @@ interface Props {
     onSubmit: React.FormEventHandler;
     onChange: (value: FormValue) => void;
     errors: { [K: string]: string[] };
-    errorsDisplayMode:'first' | 'all'
+    errorsDisplayMode?:'first' | 'all';
+
 }
 
 const Form: React.FunctionComponent<Props> = (props) => {
@@ -31,6 +32,8 @@ const Form: React.FunctionComponent<Props> = (props) => {
     return (
         <form onSubmit={onSubmit}>
             <table className="fui-form-table">
+                <tbody>
+
                 {props.fields.map(f =>
                     <tr className={classes('fui-form-tr')} key={f.name}>
                         <td className="fui-form-td">
@@ -63,6 +66,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
                         {props.buttons}
                     </td>
                 </tr>
+                </tbody>
             </table>
         </form>
     )

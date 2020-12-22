@@ -71,9 +71,6 @@ const FormExample:React.FunctionComponent=()=>{
             }
 
         });
-
-        // console.log(errors);
-        // console.log("我的上面是errors");
     }
     return(
         <div>

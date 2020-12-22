@@ -68,39 +68,16 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
 
     });
 
-    console.log(flat(Object.values(errors)));
-    console.log('我的上面是：flat(Object.values(errors))');
-    console.log(flat(Object.values(errors)).filter(item => item.promise));
-    console.log('我的上面是：flat(Object.values(errors)).filter(item=>item.promise)');
-    console.log(flat(Object.values(errors)).filter(item => item.promise).map(item => item.promise));
-    console.log('我的上面是：flat(Object.values(errors)).filter(item=>item.promise).map(item=>item.promise)');
-
     const promiseList = flat(Object.values(errors))
         .filter(item => item.promise)
         .map(item => item.promise)
     Promise.all(promiseList)
         .then(() => {
-            console.log(Object.keys(errors));
-            console.log("上面是：Object.keys(errors)");
-
-            console.log(Object.keys(errors)
-                .map<[string, string[]]>(key =>
-                    [key, errors[key].map((item: OneError) => item.message)]
-                ));
-            console.log("Object.keys(errors)\n" +
-                "                    .map<[string, string[]]>(key =>\n" +
-                "                        [key, errors[key].map((item: OneError) => item.message)]\n" +
-                "                    ));");
-
-
             const newErrors = fromEntries(
                 Object.keys(errors)
                     .map<[string, string[]]>(key =>
                         [key, errors[key].map((item: OneError) => item.message)]
                     ));
-            console.log(newErrors);
-            console.log("上面是: newErrors");
-
             callback(newErrors);
         }, () => {
             const newErrors = fromEntries(

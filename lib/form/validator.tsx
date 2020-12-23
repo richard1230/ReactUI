@@ -46,14 +46,14 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
 
         if (rule.validator) {
             const promise = rule.validator.validate(value)
-            addError(rule.key, {message: '用户名已经存在', promise});
+            addError(rule.key, {message: rule.validator.name, promise});
         }
         if (rule.required && isEmpty(value)) {
-            addError(rule.key, {message: '必填'})
+            addError(rule.key, {message: 'required'})
         }
 
         if (rule.minLength && !isEmpty(value) && value!.length < rule.minLength) {
-            addError(rule.key, {message: '太短'})
+            addError(rule.key, {message: 'minLength'})
         }
 
         if (rule.maxLength && !isEmpty(value) && value!.length > rule.maxLength) {
@@ -62,37 +62,25 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
 
         if (rule.pattern) {
             if (!(rule.pattern.test(value))) {
-                addError(rule.key, {message: '格式不正确'})
+                addError(rule.key, {message: 'pattern'})
             }
         }
-
     });
 
     const promiseList = flat(Object.values(errors))
         .filter(item => item.promise)
         .map(item => item.promise)
     Promise.all(promiseList)
-        .then(() => {
-            const newErrors = fromEntries(
-                Object.keys(errors)
-                    .map<[string, string[]]>(key =>
-                        [key, errors[key].map((item: OneError) => item.message)]
-                    ));
-            callback(newErrors);
-        }, () => {
-            const newErrors = fromEntries(
-                Object.keys(errors)
-                    .map<[string, string[]]>(
-                        //注意:这里的返回值是个数组
-                        key =>
-                        //key = username
-                        //errors['username'] == [{message:'名字不够长', promise:"..."}]
-                        //map(a=>b) ===> 这个式子返回的是b; map(item=>item.message)==>这里返回的是：名字不够长
-                        //[username,errors[..]...]中的errors['username']就是[{message:'名字不够长', promise:"..."}]
-                        [key, errors[key].map((item: OneError) => item.message)]
-                    ));
-            callback(newErrors);
-        })
+        .finally(
+            () => {
+                const newErrors = fromEntries(
+                    Object.keys(errors)
+                        .map<[string, string[]]>(key =>
+                            [key, errors[key].map((item: OneError) => item.message)]
+                        ));
+                callback(newErrors)
+            }
+        )
 
 }
 

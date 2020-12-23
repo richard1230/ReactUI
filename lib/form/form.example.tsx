@@ -30,6 +30,7 @@ const FormExample:React.FunctionComponent=()=>{
 
     const [fields] = useState([
         {name:"username",label:"你的用户名",input:{type:'text'}},
+        // {name: 'image', label: '头像', input: {type: 'text'}},
         {name: "password",label: '密码',input: {type: 'password'}},
     ])
 
@@ -66,12 +67,18 @@ const FormExample:React.FunctionComponent=()=>{
             setErrors(errors)
             console.log("确定调用setErrors");
             if (noError(errors)){
-                //没错
-                console.log("现在什么error也没有");
             }
-
         });
     }
+    const transformError = (message: string) => {
+        const map: any = {
+            unique: 'username is taken',
+            required: 'required',
+            minLength: 'too short',
+            maxLength: 'too long',
+        };
+        return map[message];
+    };
     return(
         <div>
             <Form value={formData} fields={fields}
@@ -82,6 +89,7 @@ const FormExample:React.FunctionComponent=()=>{
                       </Fragment>
                   }
                   errors={errors}
+                  transformError={transformError}
                   onChange={(NewValue)=>setFormData(NewValue)}
                   onSubmit={onSubmit}
             />

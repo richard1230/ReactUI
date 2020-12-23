@@ -16,7 +16,7 @@ interface Props {
     onChange: (value: FormValue) => void;
     errors: { [K: string]: string[] };
     errorsDisplayMode?:'first' | 'all';
-
+    transformError?: (message: string) => string;
 }
 
 const Form: React.FunctionComponent<Props> = (props) => {
@@ -28,6 +28,16 @@ const Form: React.FunctionComponent<Props> = (props) => {
         const newFormValue = {...formData, [name]: value}
         props.onChange(newFormValue)
     }
+
+    const transformError = (message: string) => {
+        const map: any = {
+            required: '必填',
+            minLength: '太短',
+            maxLength: '太长',
+        };
+        return props.transformError && props.transformError(message) || map[message] || '未知错误';
+    };
+
     const formData = props.value
     return (
         <form onSubmit={onSubmit}>
@@ -52,7 +62,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
                                 {
                                     props.errors[f.name] ?
                                         (props.errorsDisplayMode ==='first' ?
-                                            props.errors[f.name][0]:props.errors[f.name].join('-')):
+                                            transformError!(props.errors[f.name][0]) : props.errors[f.name].map(transformError!).join()) :
                                         <span>&nbsp;</span>
                                 }
                             </div>
@@ -72,6 +82,6 @@ const Form: React.FunctionComponent<Props> = (props) => {
     )
 }
 Form.defaultProps={
-    errorsDisplayMode:'first'
+    errorsDisplayMode:'first',
 }
 export default Form;

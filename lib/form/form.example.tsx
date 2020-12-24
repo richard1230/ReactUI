@@ -10,6 +10,7 @@ const checkUserName = (username: string, succeed: () => void, fail: () => void) 
         console.log('我现在才知道用户名是否存在，这是Ns种之后的事情了');
         if (usernames.indexOf(username) >= 0) {
             // fail();
+            console.log('我在succed的前面');
             succeed();
             console.log('我在succed的后面,successed执行了');
         } else {
@@ -17,14 +18,14 @@ const checkUserName = (username: string, succeed: () => void, fail: () => void) 
             fail();
 
         }
-    }, 6000);
+    }, 3000);
 };
 
 
 
 const FormExample:React.FunctionComponent=()=>{
     const [formData,setFormData] = useState<FormValue>({
-        username:"richard",
+        username:"frankfrank",
         password:""
     })
 
@@ -35,7 +36,11 @@ const FormExample:React.FunctionComponent=()=>{
     ])
 
     const [errors,setErrors] = useState({});
-
+    const validator = (username:string)=>{
+        return  new Promise<string>((resolve,reject)=>{
+                checkUserName(username,()=>resolve("成功了？"),()=>reject("unique"));
+            });
+    }
 
 
     const onSubmit = (e:React.FormEvent<HTMLFormElement>)=>{
@@ -44,26 +49,17 @@ const FormExample:React.FunctionComponent=()=>{
         const rules = [
             {key:'username',required:true},
             {key:'username',minLength:8,maxLength:16},
-            {key:'username',validator:{
-                    name:'unique',
-                    validate(username:string){
-                        console.log('有人调用了： validate(username:string) ，我的返回值是 Promise ' +
-                            '这里是验证username是否有错误的');
-                        return  new Promise<void>(
-                        (resolve,reject)=>{
-                            checkUserName(username,resolve,reject);
-                        });
-                    }
-                  }
-                },
+            {key:'username',validator},
+            {key:'username',validator},
             {key:'username',pattern:/^[A-Za-z0-9]+$/},
             {key:'password',required:true},
+            {key:'password',validator},
+            {key:'password',validator},
 
         ];
         Validator(formData,rules,(errors)=>{
             console.log(errors);
             console.log('我这里的1是最后调用的，我是callback里面的数据,上面打印的是errors');
-
             setErrors(errors)
             console.log("确定调用setErrors");
             if (noError(errors)){

@@ -6,10 +6,7 @@ interface FormRule {
     minLength?: number;
     maxLength?: number;
     pattern?: RegExp;
-    validator?: {
-        name: string,
-        validate: (value: string) => Promise<void>
-    }
+    validator?: (value: string) => Promise<string>
 }
 
 type FormRules = Array<FormRule>
@@ -28,10 +25,8 @@ export function noError(errors: any) {
     return Object.keys(errors).length === 0;
 }
 
-interface OneError {
-    message: string;
-    promise?: Promise<any>;
-}
+type OneError = string | Promise<string>;
+
 
 const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: any) => void): void => {
     let errors: any = {};
@@ -45,43 +40,50 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
         const value = formValue[rule.key];
 
         if (rule.validator) {
-            const promise = rule.validator.validate(value)
-            addError(rule.key, {message: rule.validator.name, promise});
+            const promise = rule.validator(value)
+            addError(rule.key,  promise);
         }
         if (rule.required && isEmpty(value)) {
-            addError(rule.key, {message: 'required'})
+            addError(rule.key, 'required')
         }
 
         if (rule.minLength && !isEmpty(value) && value!.length < rule.minLength) {
-            addError(rule.key, {message: 'minLength'})
+            addError(rule.key, 'minLength')
         }
 
         if (rule.maxLength && !isEmpty(value) && value!.length > rule.maxLength) {
-            addError(rule.key, {message: '太长'})
+            addError(rule.key, 'maxLength')
         }
 
         if (rule.pattern) {
             if (!(rule.pattern.test(value))) {
-                addError(rule.key, {message: 'pattern'})
+                addError(rule.key, 'pattern')
             }
         }
     });
 
-    const promiseList = flat(Object.values(errors))
-        .filter(item => item.promise)
-        .map(item => item.promise)
-    Promise.all(promiseList)
-        .finally(
-            () => {
-                const newErrors = fromEntries(
-                    Object.keys(errors)
-                        .map<[string, string[]]>(key =>
-                            [key, errors[key].map((item: OneError) => item.message)]
-                        ));
-                callback(newErrors)
+    console.log('errors如下:  ');
+    console.log(errors);//{username: Array(2), password: Array(2)}==》这是对象
+                        //password: (3) ["required", Promise, Promise]===》每个对象为===》 key：数组这种形式
+                       //username: (2) [Promise, Promise]
+    console.log(Object.keys(errors));//['username','password']
+    const x = Object.keys(errors).map(key =>
+        //errors[key]==>[Promise, Promise],这里的key就是password;
+        errors[key].map( promiseone => [key, promiseone])
+    );
+    const flattenErrors = flat(x);
+    const newPromises = flattenErrors.map(([key,promiseOrString])=>(
+        promiseOrString instanceof Promise ? promiseOrString : Promise.reject(promiseOrString))
+        .then(()=>{
+            return [key,undefined];
             }
-        )
-
+        ,(reason)=>{
+            return [key,reason];
+            })
+    );
+    Promise.all(newPromises).then(results=>{
+        callback(zip(results.filter(item=>item[1])))
+    })
 }
 
 export default Validator;
@@ -98,13 +100,14 @@ function flat(array: Array<any>) {
     return result;
 }
 
-//这个函数的功能:将数组变为对象
-function fromEntries(array: Array<[string, string[]]>) {
-    const result: { [key: string]: string[] } = {};
-    for (let i = 0; i < array.length; i++) {
-        result[array[i][0]] = array[i][1];
-    }
+function zip(kvList: Array<[string, string]>) {
+    const result = {};
+    kvList.map(([key, value]) => {
+        result[key] = result[key] || [];
+        result[key].push(value);
+    });
     return result;
 }
+
 
 

@@ -11,9 +11,6 @@ interface FormRule {
 
 type FormRules = Array<FormRule>
 
-// interface FormErrors {
-//     [K:string]:string[]
-// }
 
 function isEmpty(value: any) {
     return value === undefined || value === null || value === '';
@@ -29,7 +26,8 @@ type OneError = string | Promise<string>;
 
 
 const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: any) => void): void => {
-    let errors: any = {};
+    //key是引用类型
+    let errors: { [key: string]: OneError[] } = {};
     const addError = (key: string, error: OneError) => {
         if (errors[key] === undefined) {
             errors[key] = [];
@@ -41,7 +39,7 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
 
         if (rule.validator) {
             const promise = rule.validator(value)
-            addError(rule.key,  promise);
+            addError(rule.key, promise);
         }
         if (rule.required && isEmpty(value)) {
             addError(rule.key, 'required')
@@ -62,46 +60,57 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
         }
     });
 
-    console.log('errors如下:  ');
-    console.log(errors);//{username: Array(2), password: Array(2)}==》这是对象
-                        //password: (3) ["required", Promise, Promise]===》每个对象为===》 key：数组这种形式
-                       //username: (2) [Promise, Promise]
-    console.log(Object.keys(errors));//['username','password']
-    const x = Object.keys(errors).map(key =>
+    // console.log('errors如下:  ');
+    // console.log(errors);//{username: Array(2), password: Array(2)}==》这是对象
+    //                     //password: (3) ["required", Promise, Promise]===》每个对象为===》 key：数组这种形式
+    // //username: (2) [Promise, Promise]
+    const flattenErrors = flat<[string, OneError]>(Object.keys(errors).map<[string, OneError][]>(key =>
         //errors[key]==>[Promise, Promise],这里的key就是password;
-        errors[key].map( promiseone => [key, promiseone])
+        //这里还可以简化(主要是上面的泛型可以省掉)
+        errors[key].map<[string, OneError]>(error => [key, error])
+    ));
+    const newPromises = flattenErrors.map(
+        ([key, promiseOrString]) => {
+            const promise = promiseOrString instanceof Promise ? promiseOrString : Promise.reject(promiseOrString);
+            return promise.then<[string, undefined], [string, string]>(
+                () => {
+                    return [key, undefined];
+                },
+                (reason) => {
+                    return [key, reason];
+                })
+        }
     );
-    const flattenErrors = flat(x);
-    const newPromises = flattenErrors.map(([key,promiseOrString])=>(
-        promiseOrString instanceof Promise ? promiseOrString : Promise.reject(promiseOrString))
-        .then(()=>{
-            return [key,undefined];
-            }
-        ,(reason)=>{
-            return [key,reason];
-            })
-    );
-    Promise.all(newPromises).then(results=>{
-        callback(zip(results.filter(item=>item[1])))
+
+    function hasError(item: [string, undefined] | [string, string]): item is [string, string] {
+        return typeof item[1] === 'string';
+    }
+
+    Promise.all(newPromises).then(results => {
+        callback(zip(results.filter<[string, string]>(hasError)))
     })
 }
 
 export default Validator;
 
-function flat(array: Array<any>) {
-    const result = [];
+function flat<T>(array: Array<T | T[]>) {
+    const result: T[] = [];
     for (let i = 0; i < array.length; i++) {
         if (array[i] instanceof Array) {
-            result.push(...array[i]);
+            //i要么是T要么是T的数组
+            //其实这里是T[],这里其实是ts的坑
+            result.push(...array[i] as T[]);
         } else {
-            result.push(array[i])
+            //这里是T
+            result.push(array[i] as T)
         }
     }
     return result;
 }
 
 function zip(kvList: Array<[string, string]>) {
-    const result = {};
+    //result的类型的根据===>最后的结果为 "user":["必填","太长"]
+    const result: { [key: string]: string[] } = {};
     kvList.map(([key, value]) => {
         result[key] = result[key] || [];
         result[key].push(value);

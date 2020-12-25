@@ -7,7 +7,7 @@ import Button from "../button/button";
 const usernames = ['richard', 'jack', 'alice', 'bob'];
 const checkUserName = (username: string, succeed: () => void, fail: () => void) => {
     setTimeout(() => {
-        console.log('我现在才知道用户名是否存在，这是Ns种之后的事情了');
+        console.log('我现在才知道用户名是否已经存在，这是3s种之后的事情了');
         if (usernames.indexOf(username) >= 0) {
             // fail();
             console.log('我在succed的前面');
@@ -24,7 +24,7 @@ const checkUserName = (username: string, succeed: () => void, fail: () => void) 
 
 const FormExample: React.FunctionComponent = () => {
     const [formData, setFormData] = useState<FormValue>({
-        username: "frankfrank",
+        username: "frank",
         password: ""
     })
 
@@ -56,7 +56,6 @@ const FormExample: React.FunctionComponent = () => {
         ];
         Validator(formData, rules, (errors) => {
             console.log(errors);
-            console.log('我这里的1是最后调用的，我是callback里面的数据,上面打印的是errors');
             setErrors(errors)
             console.log("确定调用setErrors");
             if (noError(errors)) {

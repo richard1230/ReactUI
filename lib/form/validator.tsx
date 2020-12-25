@@ -60,10 +60,9 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
         }
     });
 
-    // console.log('errors如下:  ');
-    // console.log(errors);//{username: Array(2), password: Array(2)}==》这是对象
-    //                     //password: (3) ["required", Promise, Promise]===》每个对象为===》 key：数组这种形式
-    // //username: (2) [Promise, Promise]
+    // console.log("errors:");
+    // console.log(errors);
+
     const flattenErrors = flat<[string, OneError]>(Object.keys(errors).map<[string, OneError][]>(key =>
         //errors[key]==>[Promise, Promise],这里的key就是password;
         //这里还可以简化(主要是上面的泛型可以省掉)

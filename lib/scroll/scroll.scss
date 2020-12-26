@@ -1,7 +1,7 @@
 .fui-scroll{
   //overflow: auto;
   position: relative;
-  //overflow: hidden;
+  overflow: hidden;
   &-inner {
     overflow: auto;//确保滚动条在蓝色的里面
     border: 3px solid blue;
@@ -9,6 +9,6 @@
     top: 0;
     bottom: 0;
     left: 0;
-    right: -0px;
+    right: -16px;
   }
 }

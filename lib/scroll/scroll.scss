@@ -4,7 +4,6 @@
   overflow: hidden;
   &-inner {
     overflow: auto;//确保滚动条在蓝色的里面
-    border: 3px solid blue;
     position: absolute;
     top: 0;
     bottom: 0;

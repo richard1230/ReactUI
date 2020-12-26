@@ -10,6 +10,7 @@ import './example.scss';
 import IconDemo from './lib/icon/icon.demo';
 import {Icon} from "./lib";
 import FormExample from "./lib/form/form.example";
+import ScrollExample from "./lib/scroll/scroll.example";
 
 
 // const logo = require('./logo.png');
@@ -53,6 +54,11 @@ ReactDOM.render(
                                 表单
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/scroll">
+                                滚动条
+                            </NavLink>
+                        </li>
 
                     </ul>
                 </Aside>
@@ -62,6 +68,7 @@ ReactDOM.render(
                     <Route path="/dialog" component={DialogExample}/>
                     <Route path="/layout" component={LayoutExample}/>
                     <Route path="/form" component={FormExample}/>
+                    <Route path="/scroll" component={ScrollExample}/>
                 </Content>
             </Layout>
             <Footer className="site-footer">

@@ -42,7 +42,7 @@ const Scroll:React.FunctionComponent<Props> = (props)=>{
                 {children}
             </div>
             <div className="fui-scroll-track">
-                <div className="fui-scroll-bar" style={{height:barHeight, top:barTop}}>
+                <div className="fui-scroll-bar" style={{height:barHeight, transform:`translateY(${barTop}px)`}}>
 
                 </div>
 

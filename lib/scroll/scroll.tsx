@@ -74,12 +74,22 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
         draggingRef.current = false;
         console.log("end");
     };
+
+    const onSelect = (e:Event)=>{
+          if (draggingRef.current = true){
+              e.preventDefault()
+          }
+    }
     useEffect(() => {
-        document.addEventListener('mouseup', onMouseUpBar)
+        document.addEventListener('mouseup', onMouseUpBar);
         document.addEventListener('mousemove', onMouseMoveBar);
+        document.addEventListener('selectstart', onSelect);
+
         return () => {
             document.removeEventListener('mouseup', onMouseUpBar)
             document.removeEventListener('mousemove', onMouseMoveBar)
+            document.removeEventListener('selectstart', onSelect);
+
         }
     }, [])
 

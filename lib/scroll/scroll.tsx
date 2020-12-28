@@ -8,14 +8,14 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 }
 
-var isTouchDevice:boolean = 'ontouchstart' in document.documentElement;
+var isTouchDevice: boolean = 'ontouchstart' in document.documentElement;
 
 
 const Scroll: React.FunctionComponent<Props> = (props) => {
     const {children, ...rest} = props;
     const [barHeight, setBarHeight] = useState(0)
     const [barTop, _setBarTop] = useState(0)
-    const [barVisible,setBarVisible] = useState(false)
+    const [barVisible, setBarVisible] = useState(false)
 
     const setBarTop = (number: number) => {
         const {current} = containerRef;
@@ -30,6 +30,7 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
 
     }
 
+    const timerIdRef = useRef<number | null>(null)
     const onScroll: UIEventHandler = (e) => {
         setBarVisible(true)
         const {current} = containerRef;
@@ -38,10 +39,14 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
         const scrollTop = current!.scrollTop;
         setBarTop(scrollTop * viewHeight / scrollHeight);
 
-        setTimeout(
-            ()=>{
+        if (timerIdRef.current !== null) {
+            //加！说明这个值不可能为null
+            window.clearTimeout(timerIdRef.current!)
+        }
+        timerIdRef.current = window.setTimeout(
+            () => {
                 setBarVisible(false)
-            },1000
+            }, 1000
         )
     }
 
@@ -85,10 +90,10 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
         console.log("end");
     };
 
-    const onSelect = (e:Event)=>{
-          if (draggingRef.current = true){
-              e.preventDefault()
-          }
+    const onSelect = (e: Event) => {
+        if (draggingRef.current = true) {
+            e.preventDefault()
+        }
     }
     useEffect(() => {
         document.addEventListener('mouseup', onMouseUpBar);

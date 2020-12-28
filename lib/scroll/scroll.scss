@@ -9,6 +9,10 @@
     bottom: 0;
     left: 0;
     right: -16px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   &-track {
     //border:1px solid blue;

@@ -8,10 +8,14 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 }
 
+var isTouchDevice:boolean = 'ontouchstart' in document.documentElement;
+
+
 const Scroll: React.FunctionComponent<Props> = (props) => {
     const {children, ...rest} = props;
     const [barHeight, setBarHeight] = useState(0)
     const [barTop, _setBarTop] = useState(0)
+    const [barVisible,setBarVisible] = useState(false)
 
     const setBarTop = (number: number) => {
         const {current} = containerRef;
@@ -27,12 +31,18 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
     }
 
     const onScroll: UIEventHandler = (e) => {
+        setBarVisible(true)
         const {current} = containerRef;
         const scrollHeight = current!.scrollHeight;
         const viewHeight = current!.getBoundingClientRect().height;
         const scrollTop = current!.scrollTop;
         setBarTop(scrollTop * viewHeight / scrollHeight);
 
+        setTimeout(
+            ()=>{
+                setBarVisible(false)
+            },1000
+        )
     }
 
     const containerRef = useRef<HTMLDivElement>(null)
@@ -103,14 +113,13 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
                  ref={containerRef}>
                 {children}
             </div>
+            {barVisible &&
             <div className="fui-scroll-track">
                 <div className="fui-scroll-bar" style={{height: barHeight, transform: `translateY(${barTop}px)`}}
-                     onMouseDown={onMouseDownBar}
-                >
-
-                </div>
+                     onMouseDown={onMouseDownBar}/>
 
             </div>
+            }
         </div>
     )
 }

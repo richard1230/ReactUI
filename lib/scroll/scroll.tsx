@@ -1,14 +1,14 @@
 import * as React from "react";
-import {HTMLAttributes, MouseEventHandler, UIEventHandler, useEffect, useRef, useState} from "react";
+import {HTMLAttributes, MouseEventHandler, TouchEventHandler, UIEventHandler, useEffect, useRef, useState} from "react";
 import './scroll.scss'
-
 // import scrollbarWidth from "./scrollbar-width";
+
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
 
 }
 
-var isTouchDevice: boolean = 'ontouchstart' in document.documentElement;
+// var isTouchDevice: boolean = 'ontouchstart' in document.documentElement;
 
 
 const Scroll: React.FunctionComponent<Props> = (props) => {
@@ -95,6 +95,7 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
             e.preventDefault()
         }
     }
+
     useEffect(() => {
         document.addEventListener('mouseup', onMouseUpBar);
         document.addEventListener('mousemove', onMouseMoveBar);
@@ -107,6 +108,25 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
 
         }
     }, [])
+    const [translateY, setTranslateY] = useState(0)
+    const lastYRef = useRef(0);
+    const onTouchStart :TouchEventHandler= (e)=>{
+        // console.log(e.touches[0].clientY);
+        lastYRef.current = e.touches[0].clientY;
+    }
+
+    const onTouchMove: TouchEventHandler = (e)=>{
+        console.log("e.touches[0].clientY:  ");
+        console.log(e.touches[0].clientY);
+        const deltaY = e.touches[0].clientY - lastYRef.current
+        if (deltaY > 0 ){
+            console.log('看上面');
+            setTranslateY(translateY + deltaY)
+        }else {
+            console.log('看下面');
+        }
+        lastYRef.current = e.touches[0].clientY
+    }
 
     return (
         <div className="fui-scroll" {...rest}>
@@ -114,8 +134,15 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
             {/*// onMouseMove={onMouseMoveBar}*/}
 
             <div className="fui-scroll-inner"
+                 style={{
+                     // right: -scrollbarWidth(),
+                     transform:`translateY(${translateY}px)`
+                 }}
+                 ref={containerRef}
                  onScroll={onScroll}
-                 ref={containerRef}>
+                 onTouchMove={onTouchMove}
+                 onTouchStart={onTouchStart}
+            >
                 {children}
             </div>
             {barVisible &&

@@ -16,17 +16,17 @@ const scopedClass = scopedClassMaker('fui-tree');
 const sc = scopedClass;
 
 const renderItem = (item:SourceDataItem,level = 1)=>{
+
     const classes = {
         ['level-'+level]:true,
         'Item':true
     };
-
     return(
         <div key={item.value}
-             className={sc({['level-'+ level]: true})}
-             // style={{paddingLeft:(level - 1) * 10 + 'px'}}
-        >
-            {item.text}
+             className={sc(classes)}>
+           <div className={sc('text')}>
+               {item.text}
+           </div>
             {item.children?.map(sub=>{
                 return renderItem(sub,level+1)
             })}

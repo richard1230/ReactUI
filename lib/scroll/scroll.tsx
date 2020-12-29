@@ -1,6 +1,7 @@
 import * as React from "react";
 import {HTMLAttributes, MouseEventHandler, TouchEventHandler, UIEventHandler, useEffect, useRef, useState} from "react";
 import './scroll.scss'
+
 // import scrollbarWidth from "./scrollbar-width";
 
 
@@ -110,19 +111,19 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
     }, [])
     const [translateY, setTranslateY] = useState(0)
     const lastYRef = useRef(0);
-    const onTouchStart :TouchEventHandler= (e)=>{
+    const onTouchStart: TouchEventHandler = (e) => {
         // console.log(e.touches[0].clientY);
         lastYRef.current = e.touches[0].clientY;
     }
 
-    const onTouchMove: TouchEventHandler = (e)=>{
+    const onTouchMove: TouchEventHandler = (e) => {
         console.log("e.touches[0].clientY:  ");
         console.log(e.touches[0].clientY);
         const deltaY = e.touches[0].clientY - lastYRef.current
-        if (deltaY > 0 ){
+        if (deltaY > 0) {
             console.log('看上面');
             setTranslateY(translateY + deltaY)
-        }else {
+        } else {
             console.log('看下面');
         }
         lastYRef.current = e.touches[0].clientY
@@ -136,7 +137,7 @@ const Scroll: React.FunctionComponent<Props> = (props) => {
             <div className="fui-scroll-inner"
                  style={{
                      // right: -scrollbarWidth(),
-                     transform:`translateY(${translateY}px)`
+                     transform: `translateY(${translateY}px)`
                  }}
                  ref={containerRef}
                  onScroll={onScroll}

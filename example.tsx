@@ -11,6 +11,7 @@ import IconDemo from './lib/icon/icon.demo';
 import {Icon} from "./lib";
 import FormExample from "./lib/form/form.example";
 import ScrollExample from "./lib/scroll/scroll.example";
+import TreeExample from "./lib/tree/tree.example";
 
 
 // const logo = require('./logo.png');
@@ -59,6 +60,11 @@ ReactDOM.render(
                                 滚动条
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink to="/tree">
+                                树型组件
+                            </NavLink>
+                        </li>
 
                     </ul>
                 </Aside>
@@ -69,6 +75,8 @@ ReactDOM.render(
                     <Route path="/layout" component={LayoutExample}/>
                     <Route path="/form" component={FormExample}/>
                     <Route path="/scroll" component={ScrollExample}/>
+                    <Route path="/tree" component={TreeExample}/>
+
                 </Content>
             </Layout>
             <Footer className="site-footer">

@@ -34,7 +34,7 @@ const TreeExample: React.FC = (props)=>{
             Tree
             <h1>展示数据</h1>
             <div style={{width:200}}>
-                <Tree  sourceData={array}/>
+                <Tree  sourceData={array} selectedValues={['1.1.1','1.1.2']}/>
             </div>
         </div>
     )

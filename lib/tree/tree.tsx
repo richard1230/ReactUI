@@ -9,13 +9,14 @@ interface SourceDataItem {
 }
 
 interface Props {
-    sourceData: SourceDataItem[]
+    sourceData: SourceDataItem[],
+    selectedValues:string[]
 }
 
 const scopedClass = scopedClassMaker('fui-tree');
 const sc = scopedClass;
 
-const renderItem = (item:SourceDataItem,level = 1)=>{
+const renderItem = (item:SourceDataItem, selectValues: string[],level = 1)=>{
 
     const classes = {
         ['level-'+level]:true,
@@ -25,10 +26,11 @@ const renderItem = (item:SourceDataItem,level = 1)=>{
         <div key={item.value}
              className={sc(classes)}>
            <div className={sc('text')}>
+               <input type="checkbox" checked={selectValues.indexOf(item.value)>=0} />
                {item.text}
            </div>
             {item.children?.map(sub=>{
-                return renderItem(sub,level+1)
+                return renderItem(sub,selectValues, level+1)
             })}
         </div>
     )
@@ -40,7 +42,7 @@ const Tree: React.FC<Props> = (props)=>{
         <div>
             {
                 props.sourceData?.map(item=>{
-                    return  renderItem(item)
+                    return  renderItem(item,props.selectedValues)
                 })
             }
         </div>

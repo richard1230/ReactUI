@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Tree from "./tree";
+import Tree, {SourceDataItem} from "./tree";
 
 const TreeExample: React.FC = (props)=>{
     const [array] = useState([
@@ -28,13 +28,24 @@ const TreeExample: React.FC = (props)=>{
             ]
 
         }
-    ])
+    ]);
+    const [selectedValues,setSelectedValues] = useState(['1.1.1','1.1.2'])
+    const onChange = (item:SourceDataItem,bool:boolean)=>{
+        if (bool){
+            setSelectedValues([...selectedValues,item.value])
+        }else {
+            //保留没有被选中的，即:将选中的删掉
+           setSelectedValues(selectedValues.filter(value => value!==item.value))
+        }
+    }
     return(
         <div>
             Tree
             <h1>展示数据</h1>
             <div style={{width:200}}>
-                <Tree  sourceData={array} selectedValues={['1.1.1','1.1.2']}/>
+                <Tree  sourceData={array}
+                       onChange={onChange}
+                       selectedValues={selectedValues}/>
             </div>
         </div>
     )

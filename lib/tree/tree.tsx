@@ -2,21 +2,25 @@ import React from "react";
 import {scopedClassMaker} from "../helpers/classes";
 import './tree.scss'
 
-interface SourceDataItem {
+ export interface SourceDataItem {
     text: string;
     value:string;
-    children?: SourceDataItem[]
+    children?: SourceDataItem[];
 }
 
 interface Props {
     sourceData: SourceDataItem[],
-    selectedValues:string[]
+    selectedValues:string[],
+    onChange:(item:SourceDataItem,bool:boolean)=>void
 }
 
 const scopedClass = scopedClassMaker('fui-tree');
 const sc = scopedClass;
 
-const renderItem = (item:SourceDataItem, selectValues: string[],level = 1)=>{
+const renderItem = (item:SourceDataItem,
+                    selectValues: string[],
+                    onChange:(item:SourceDataItem,bool:boolean)=>void,
+                    level = 1)=>{
 
     const classes = {
         ['level-'+level]:true,
@@ -26,11 +30,14 @@ const renderItem = (item:SourceDataItem, selectValues: string[],level = 1)=>{
         <div key={item.value}
              className={sc(classes)}>
            <div className={sc('text')}>
-               <input type="checkbox" checked={selectValues.indexOf(item.value)>=0} />
+               <input type="checkbox"
+                      onChange={(e)=>onChange(item,e.target.checked)}
+                      checked={selectValues.indexOf(item.value)>=0}
+               />
                {item.text}
            </div>
             {item.children?.map(sub=>{
-                return renderItem(sub,selectValues, level+1)
+                return renderItem(sub,selectValues, onChange,level+1)
             })}
         </div>
     )
@@ -42,7 +49,7 @@ const Tree: React.FC<Props> = (props)=>{
         <div>
             {
                 props.sourceData?.map(item=>{
-                    return  renderItem(item,props.selectedValues)
+                    return  renderItem(item,props.selectedValues,props.onChange)
                 })
             }
         </div>

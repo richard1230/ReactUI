@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ChangeEventHandler} from "react";
 import {scopedClassMaker} from "../helpers/classes";
 import './tree.scss'
 
@@ -8,17 +8,22 @@ export interface SourceDataItem {
     children?: SourceDataItem[];
 }
 
-type A = {selected:string[],multiple:true}
-type B = {selected: string,multiple?:false}
+type A = {
+    selected: string[], multiple: true,
+    onChange: (NewSelected: string []) => void;
 
-type Props  = {
+}
+type B = {
+    selected: string, multiple?: false,
+    onChange: (NewSelected: string) => void
+}
+
+type Props = {
     sourceData: SourceDataItem[];
-    onChange: (item: SourceDataItem, bool: boolean) => void;
 } & (A | B)
 
 const scopedClass = scopedClassMaker('fui-tree');
 const sc = scopedClass;
-
 
 
 const Tree: React.FC<Props> = (props) => {
@@ -32,35 +37,47 @@ const Tree: React.FC<Props> = (props) => {
             'Item': true
         };
 
-        const checked = props.multiple?
-            props.selected.indexOf(item.value) >= 0:
-            props.selected=== item.value
+        const checked = props.multiple ?
+            props.selected.indexOf(item.value) >= 0 :
+            props.selected === item.value
+
+        const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+            const bool = e.target.checked
+            if (props.multiple) {
+                if (bool) {
+                    props.onChange([...props.selected, item.value])
+                } else {
+                    //保留没有被选中的，即:将选中的删掉
+                    props.onChange(props.selected.filter(value => value !== item.value))
+                }
+            }
+        }
         return (
             <div key={item.value}
                  className={sc(classes)}>
                 <div className={sc('text')}>
                     <input type="checkbox"
-                           onChange={(e) => props.onChange(item, e.target.checked)}
+                           onChange={onChange}
                            checked={checked}
                     />
                     {item.text}
                 </div>
                 {item.children?.map(sub => {
-                    return renderItem(sub,  level + 1)
+                    return renderItem(sub, level + 1)
                 })}
             </div>
         )
     }
 
-        return (
-            <div>
-                {
-                    props.sourceData?.map(item => {
-                        return renderItem(item)
-                    })
-                }
-            </div>
-        )
+    return (
+        <div>
+            {
+                props.sourceData?.map(item => {
+                    return renderItem(item)
+                })
+            }
+        </div>
+    )
 
 
 }

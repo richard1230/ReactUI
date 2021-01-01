@@ -9,12 +9,14 @@ export interface SourceDataItem {
 }
 
 type A = {
-    selected: string[], multiple: true,
-    onChange: (NewSelected: string []) => void;
+    selected: string[],
+    multiple: true,
+    onChange: (NewSelected: string []) => void
 
 }
 type B = {
-    selected: string, multiple?: false,
+    selected: string,
+    multiple?: false,
     onChange: (NewSelected: string) => void
 }
 
@@ -50,6 +52,8 @@ const Tree: React.FC<Props> = (props) => {
                     //保留没有被选中的，即:将选中的删掉
                     props.onChange(props.selected.filter(value => value !== item.value))
                 }
+            }else {
+                props.onChange(item.value)
             }
         }
         return (

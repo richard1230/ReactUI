@@ -52,37 +52,37 @@ const Tree: React.FC<Props> = (props) => {
                     //保留没有被选中的，即:将选中的删掉
                     props.onChange(props.selected.filter(value => value !== item.value))
                 }
-            }else {
+            } else {
                 props.onChange(item.value)
             }
         }
 
-        const [expanded,setExpanded] = useState(true)
+        const [expanded, setExpanded] = useState(true)
 
-        const expand = ()=>{
-          setExpanded(true)
+        const expand = () => {
+            setExpanded(true)
         }
 
-        const collapse = ()=>{
-           setExpanded(false)
+        const collapse = () => {
+            setExpanded(false)
         }
 
         return (
             <div key={item.value}
                  className={sc(classes)}>
                 <div className={sc('text')}>
-                    <input type="checkbox"  onChange={onChange} checked={checked}/>
+                    <input type="checkbox" onChange={onChange} checked={checked}/>
                     {item.text}
                     {item.children &&
                     <span>
                         {expanded ?
-                                <span onClick={collapse}>-</span>:
-                                <span onClick={expand}>+</span>
+                            <span onClick={collapse}>-</span> :
+                            <span onClick={expand}>+</span>
                         }
                     </span>
                     }
                 </div>
-                <div className={sc({children:true,collapsed: !expanded})}>
+                <div className={sc({children: true, collapsed: !expanded})}>
                     {item.children?.map(sub => {
                         return renderItem(sub, level + 1)
                     })}

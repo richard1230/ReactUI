@@ -59,19 +59,21 @@ const Tree: React.FC<Props> = (props) => {
         return (
             <div key={item.value}
                  className={sc(classes)}>
-                <div className={sc('text')}>
+                <label className={sc('text')}>
                     <input type="checkbox"
                            onChange={onChange}
                            checked={checked}
                     />
                     {item.text}
+                </label>
+                <div className={sc('children')}>
+                    {item.children?.map(sub => {
+                        return renderItem(sub, level + 1)
+                    })}
                 </div>
-                {item.children?.map(sub => {
-                    return renderItem(sub, level + 1)
-                })}
             </div>
         )
-    }
+    };
 
     return (
         <div>

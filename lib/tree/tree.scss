@@ -34,4 +34,8 @@
       padding-left: 3em;
     }
   }
+  &-collapsed {
+    height: 0;
+    overflow: hidden;
+  }
 }

@@ -1,4 +1,4 @@
-import React, {ChangeEventHandler} from "react";
+import React, {ChangeEventHandler, useState} from "react";
 import {scopedClassMaker} from "../helpers/classes";
 import './tree.scss'
 
@@ -56,17 +56,33 @@ const Tree: React.FC<Props> = (props) => {
                 props.onChange(item.value)
             }
         }
+
+        const [expanded,setExpanded] = useState(true)
+
+        const expand = ()=>{
+          setExpanded(true)
+        }
+
+        const collapse = ()=>{
+           setExpanded(false)
+        }
+
         return (
             <div key={item.value}
                  className={sc(classes)}>
-                <label className={sc('text')}>
-                    <input type="checkbox"
-                           onChange={onChange}
-                           checked={checked}
-                    />
+                <div className={sc('text')}>
+                    <input type="checkbox"  onChange={onChange} checked={checked}/>
                     {item.text}
-                </label>
-                <div className={sc('children')}>
+                    {item.children &&
+                    <span>
+                        {expanded ?
+                                <span onClick={collapse}>-</span>:
+                                <span onClick={expand}>+</span>
+                        }
+                    </span>
+                    }
+                </div>
+                <div className={sc({children:true,collapsed: !expanded})}>
                     {item.children?.map(sub => {
                         return renderItem(sub, level + 1)
                     })}

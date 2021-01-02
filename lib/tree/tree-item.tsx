@@ -36,7 +36,12 @@ const TreeItem: React.FC<Props> = (props) => {
                 treeProps.onChange(treeProps.selected.filter(value => value !== item.value))
             }
         } else {
-            treeProps.onChange(item.value)
+            if (e.target.checked){
+                treeProps.onChange(item.value)
+            }else {
+                //如果取消，则为空
+                treeProps.onChange('')
+            }
         }
     }
 

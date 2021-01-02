@@ -1,6 +1,7 @@
 import React, {ChangeEventHandler, useState} from "react";
 import {scopedClassMaker} from "../helpers/classes";
 import {SourceDataItem, TreeProps} from "./SourceDataItem";
+import useUpdate from "../hooks/useUpdate";
 
 // type Props = TreeProps & {
 //     item: SourceDataItem;
@@ -54,6 +55,10 @@ const TreeItem: React.FC<Props> = (props) => {
     const collapse = () => {
         setExpanded(false)
     }
+
+    useUpdate(expanded,()=>{
+        console.log('expanded的值变为' + expanded);
+    })
     return (
         <div key={item.value}
              className={sc(classes)}>

@@ -1,6 +1,6 @@
 .fui-tree{
   &-item{
-    outline: 1px solid;
+    border: 1px solid;
     //border: 1px solid;
     line-height: 1.5;
   }
@@ -34,8 +34,15 @@
       padding-left: 3em;
     }
   }
-  &-collapsed {
-    height: 0;
+  //&-collapsed {
+  //  height: 0;
+  //  overflow: hidden;
+  //}
+  &-children{
     overflow: hidden;
+    transition: height 1s;
+    &-gone{
+      height: 0;
+    }
   }
 }

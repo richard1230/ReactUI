@@ -1,4 +1,4 @@
-import React, {ChangeEventHandler, useState} from "react";
+import React, {ChangeEventHandler, useRef, useState} from "react";
 import {scopedClassMaker} from "../helpers/classes";
 import {SourceDataItem, TreeProps} from "./SourceDataItem";
 import useUpdate from "../hooks/useUpdate";
@@ -47,7 +47,7 @@ const TreeItem: React.FC<Props> = (props) => {
     }
 
     const [expanded, setExpanded] = useState(true)
-
+    const divRef = useRef<HTMLDivElement>(null)
     const expand = () => {
         setExpanded(true)
     }
@@ -57,7 +57,37 @@ const TreeItem: React.FC<Props> = (props) => {
     }
 
     useUpdate(expanded,()=>{
-        console.log('expanded的值变为' + expanded);
+        if(expanded){
+            console.log('打开');
+            if (!divRef.current){return}
+            divRef.current.style.height = 'auto'
+            const {height} = divRef.current.getBoundingClientRect();
+            divRef.current.style.height = '0px';
+            divRef.current.getBoundingClientRect();
+            divRef.current.style.height =height + 'px'
+            const y = ()=>{
+                if (!divRef.current){return}
+                divRef.current.style.height='auto';
+                divRef.current.classList.add('fui-tree-children-present')
+                divRef.current.removeEventListener('transitionend',y)
+            }
+            divRef.current.addEventListener('transitionend',y)
+        }else {
+            console.log('关闭');
+            if (!divRef.current){return}
+            const {height} = divRef.current.getBoundingClientRect();
+            // console.log(height);
+            divRef.current.style.height = height + 'px';
+            divRef.current.getBoundingClientRect();
+            divRef.current.style.height = '0px';
+            const x = ()=>{
+                if (!divRef.current){return}
+                divRef.current.style.height='';
+                divRef.current.classList.add('fui-tree-children-gone')
+                divRef.current.removeEventListener('transitionend',x)
+            }
+            divRef.current.addEventListener('transitionend',x)
+        }
     })
     return (
         <div key={item.value}
@@ -74,7 +104,7 @@ const TreeItem: React.FC<Props> = (props) => {
                     </span>
                 }
             </div>
-            <div className={sc({children: true, collapsed: !expanded})}>
+            <div  ref={divRef} className={sc({children: true, collapsed: !expanded})}>
                 {item.children?.map(sub =>
                     <TreeItem key={sub.value} item={sub} level={level + 1} treeProps={treeProps}/>
                 )}

@@ -65,28 +65,27 @@ const TreeItem: React.FC<Props> = (props) => {
             divRef.current.style.height = '0px';
             divRef.current.getBoundingClientRect();
             divRef.current.style.height =height + 'px'
-            const y = ()=>{
+            const AfterExpand = ()=>{
                 if (!divRef.current){return}
                 divRef.current.style.height='auto';
                 divRef.current.classList.add('fui-tree-children-present')
-                divRef.current.removeEventListener('transitionend',y)
+                divRef.current.removeEventListener('transitionend',AfterExpand)
             }
-            divRef.current.addEventListener('transitionend',y)
+            divRef.current.addEventListener('transitionend',AfterExpand)
         }else {
             console.log('关闭');
             if (!divRef.current){return}
             const {height} = divRef.current.getBoundingClientRect();
-            // console.log(height);
             divRef.current.style.height = height + 'px';
             divRef.current.getBoundingClientRect();
             divRef.current.style.height = '0px';
-            const x = ()=>{
+            const AfterCollapse = ()=>{
                 if (!divRef.current){return}
                 divRef.current.style.height='';
                 divRef.current.classList.add('fui-tree-children-gone')
-                divRef.current.removeEventListener('transitionend',x)
+                divRef.current.removeEventListener('transitionend',AfterCollapse)
             }
-            divRef.current.addEventListener('transitionend',x)
+            divRef.current.addEventListener('transitionend',AfterCollapse)
         }
     })
     return (

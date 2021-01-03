@@ -52,13 +52,16 @@ const TreeItem: React.FC<Props> = (props) => {
     }
 
     useUpdate(expanded, () => {
+        if (!divRef.current) {
+            return
+        }
         if (expanded) {
-            console.log('打开');
-            if (!divRef.current) {
-                return
-            }
+            divRef.current.style.position = 'absolute';
+            divRef.current.style.opacity = '0'
             divRef.current.style.height = 'auto'
             const {height} = divRef.current.getBoundingClientRect();
+            divRef.current.style.position = ''
+            divRef.current.style.opacity = ''
             divRef.current.style.height = '0px';
             divRef.current.getBoundingClientRect();
             divRef.current.style.height = height + 'px'
@@ -72,10 +75,6 @@ const TreeItem: React.FC<Props> = (props) => {
             }
             divRef.current.addEventListener('transitionend', AfterExpand)
         } else {
-            console.log('关闭');
-            if (!divRef.current) {
-                return
-            }
             const {height} = divRef.current.getBoundingClientRect();
             divRef.current.style.height = height + 'px';
             divRef.current.getBoundingClientRect();

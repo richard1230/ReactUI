@@ -3,11 +3,6 @@ import {scopedClassMaker} from "../helpers/classes";
 import {SourceDataItem, TreeProps} from "./SourceDataItem";
 import useUpdate from "../hooks/useUpdate";
 
-// type Props = TreeProps & {
-//     item: SourceDataItem;
-//     level:number
-// }
-
 interface Props {
     item: SourceDataItem;
     level: number
@@ -37,9 +32,9 @@ const TreeItem: React.FC<Props> = (props) => {
                 treeProps.onChange(treeProps.selected.filter(value => value !== item.value))
             }
         } else {
-            if (e.target.checked){
+            if (e.target.checked) {
                 treeProps.onChange(item.value)
-            }else {
+            } else {
                 //如果取消，则为空
                 treeProps.onChange('')
             }
@@ -56,36 +51,44 @@ const TreeItem: React.FC<Props> = (props) => {
         setExpanded(false)
     }
 
-    useUpdate(expanded,()=>{
-        if(expanded){
+    useUpdate(expanded, () => {
+        if (expanded) {
             console.log('打开');
-            if (!divRef.current){return}
+            if (!divRef.current) {
+                return
+            }
             divRef.current.style.height = 'auto'
             const {height} = divRef.current.getBoundingClientRect();
             divRef.current.style.height = '0px';
             divRef.current.getBoundingClientRect();
-            divRef.current.style.height =height + 'px'
-            const AfterExpand = ()=>{
-                if (!divRef.current){return}
-                divRef.current.style.height='auto';
+            divRef.current.style.height = height + 'px'
+            const AfterExpand = () => {
+                if (!divRef.current) {
+                    return
+                }
+                divRef.current.style.height = 'auto';
                 divRef.current.classList.add('fui-tree-children-present')
-                divRef.current.removeEventListener('transitionend',AfterExpand)
+                divRef.current.removeEventListener('transitionend', AfterExpand)
             }
-            divRef.current.addEventListener('transitionend',AfterExpand)
-        }else {
+            divRef.current.addEventListener('transitionend', AfterExpand)
+        } else {
             console.log('关闭');
-            if (!divRef.current){return}
+            if (!divRef.current) {
+                return
+            }
             const {height} = divRef.current.getBoundingClientRect();
             divRef.current.style.height = height + 'px';
             divRef.current.getBoundingClientRect();
             divRef.current.style.height = '0px';
-            const AfterCollapse = ()=>{
-                if (!divRef.current){return}
-                divRef.current.style.height='';
+            const AfterCollapse = () => {
+                if (!divRef.current) {
+                    return
+                }
+                divRef.current.style.height = '';
                 divRef.current.classList.add('fui-tree-children-gone')
-                divRef.current.removeEventListener('transitionend',AfterCollapse)
+                divRef.current.removeEventListener('transitionend', AfterCollapse)
             }
-            divRef.current.addEventListener('transitionend',AfterCollapse)
+            divRef.current.addEventListener('transitionend', AfterCollapse)
         }
     })
     return (
@@ -103,7 +106,7 @@ const TreeItem: React.FC<Props> = (props) => {
                     </span>
                 }
             </div>
-            <div  ref={divRef} className={sc({children: true, collapsed: !expanded})}>
+            <div ref={divRef} className={sc({children: true, collapsed: !expanded})}>
                 {item.children?.map(sub =>
                     <TreeItem key={sub.value} item={sub} level={level + 1} treeProps={treeProps}/>
                 )}

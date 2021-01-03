@@ -1,18 +1,9 @@
 import React from "react";
-// import {scopedClassMaker} from "../helpers/classes";
 import './tree.scss'
 import TreeItem from "./tree-item";
 import {TreeProps} from "./SourceDataItem";
 
-
-
-
-// const scopedClass = scopedClassMaker('fui-tree');
-// const sc = scopedClass;
-
-
 const Tree: React.FC<TreeProps> = (props) => {
-
 
 
     return (

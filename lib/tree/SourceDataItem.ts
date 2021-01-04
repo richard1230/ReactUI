@@ -13,7 +13,7 @@
  }
  type B = {
      selected: string,
-     multiple?: false,
+      multiple?: false,
      onChange: (NewSelected: string) => void
  }
 

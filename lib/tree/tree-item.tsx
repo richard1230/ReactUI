@@ -22,14 +22,41 @@ const TreeItem: React.FC<Props> = (props) => {
         treeProps.selected.indexOf(item.value) >= 0 :
         treeProps.selected === item.value
 
+    function collectChildrenValues (item:SourceDataItem):string[]{
+        return flatten(item.children?.map(i=>[i.value,collectChildrenValues(i)]))
+    }
+    interface RecursiveArray<T> extends Array<T | RecursiveArray<T>>{}
+
+    function flatten(array?:RecursiveArray<string>) :string[] {
+        if (!array){return [];}
+       return  array.reduce<string[]>((result,current)=>{
+            if (typeof  current==='string'){
+                return result.concat(current);
+            }else {//此时为string[]类型
+                return result.concat(flatten(current))
+            }},[]);
+        // const result = [];
+        // for (let i = 0; i<array.length;i++){
+        //     if (array[i] instanceof  Array){
+        //         result.push(...flatten(array[i] as RecursiveArray<string>))
+        //     }else {
+        //         result.push(array[i])
+        //     }
+        // }
+    }
+
     const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        const childrenValues = collectChildrenValues(item);
+        console.log(childrenValues);
+
         const bool = e.target.checked
         if (treeProps.multiple) {
             if (bool) {
-                treeProps.onChange([...treeProps.selected, item.value])
+                treeProps.onChange([...treeProps.selected, item.value,...childrenValues])
             } else {
-                //保留没有被选中的，即:将选中的删掉
-                treeProps.onChange(treeProps.selected.filter(value => value !== item.value))
+                //保留没有被选中的，即:将选中的删掉;
+                // ===>value不在item同时也不在childrenValues里面
+                treeProps.onChange(treeProps.selected.filter(value => (value !== item.value&& childrenValues.indexOf(value)===-1)))
             }
         } else {
             if (e.target.checked) {

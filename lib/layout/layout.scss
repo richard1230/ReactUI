@@ -1,20 +1,17 @@
 @import "../helper";
-
-.gu-layout{
+.gu-layout {
   display: flex;
   flex-direction: column;
-
   &-content {
     flex-grow: 1;
   }
-
-  & &{
+  & & {
     flex-grow: 1;
     flex-direction: row;
   }
-  &-hasAside{
+  &-hasAside {
     flex-direction: row;
-    .gu-layout{
+    .gu-layout {
       flex-direction: column;
     }
   }

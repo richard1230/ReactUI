@@ -1,4 +1,7 @@
 .fui-citySelect {
+  &-body{
+    overflow: hidden;
+  }
   &-dialog {
     position: fixed;
     top: 0;
@@ -7,7 +10,19 @@
     height: 100%;
     overflow: auto;
     background: white;
-
+      > header{
+        background: rgb(255,202,0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        font-size: 16px;
+        line-height: 50px;
+        > .icon{
+          position: absolute;
+          left: 0;
+        }
+      }
   }
 
 }

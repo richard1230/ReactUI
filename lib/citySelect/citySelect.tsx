@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 import pinyin from 'tiny-pinyin';
 
@@ -7,34 +7,46 @@ interface Props {
     dataSource:string[]
 }
 
+interface Context {
+   map: {[key:string]:string[]}
+}
+
+const CitySelectContext = React.createContext<Context >({map:{}})
+
 const CitySelect:React.FC<Props>=(props)=>{
     const [dialogVisible,setDialogVisible] = useState(false);
 
-    const map1:{[key:string]:string[]}={}
+    // const map1:{[key:string]:string[]}={}
+    //左边的map类型与当前Context的map类型是一样的
+    const map:Context['map']={}
+
     props.dataSource.map((city)=>{
         const  py = pinyin.convertToPinyin(city)
         const index = py[0]
         //如果是空的就将其初始化为数组
-        map1[index]= map1[index] || [];
-        map1[index].push(city)
+        map[index]= map[index] || [];
+        map[index].push(city)
     })
-    console.log(map1);
-    console.log(Object.keys(map1));
+    // console.log(map);
+    // console.log(Object.keys(map));
     const onClick = ()=>{
         setDialogVisible(true)
         console.log("dialogVisible: "+dialogVisible);
     }
     return(
-        <>
+        <CitySelectContext.Provider value={{map}}>
         <div onClick={onClick}>{props.children}</div>
             {dialogVisible && <Dialog onClose={()=>setDialogVisible(false)} />}
 
-     </>
+     </CitySelectContext.Provider>
 
     );
 }
 
 const Dialog:React.FC<{onClose:()=>void}>=(props)=>{
+    const {map} = useContext(CitySelectContext)
+    console.log(map);
+    const indxList = Object.keys(map).sort();
     return ReactDOM.createPortal(
         (<div className="fui-citySelect-dialog"
               onClick={props.onClose}
@@ -45,7 +57,9 @@ const Dialog:React.FC<{onClose:()=>void}>=(props)=>{
             </header>
             <CurrentLocation/>
             <h2>全部城市</h2>
-            <div className="cityIndex">ABCDE...</div>
+            <ol className="fui-citySelect-index">
+                {indxList.map(a=><li key={a}>{a}</li>)}
+            </ol>
             <div className="cityList">所有城市</div>
         </div>),document.body)
 

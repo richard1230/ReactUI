@@ -4,14 +4,17 @@ import pinyin from 'tiny-pinyin';
 
 
 interface Props {
-    dataSource:string[]
+    dataSource:string[];
+    onChange:(p1:string)=>void;
 }
 
 interface Context {
-   map: {[key:string]:string[]}
+   map: {[key:string]:string[]};
+    onChange:(p1:string)=>void;
+
 }
 
-const CitySelectContext = React.createContext<Context >({map:{}})
+const CitySelectContext = React.createContext<Context >({map:{},onChange:(p1:string)=>{}})
 
 const CitySelect:React.FC<Props>=(props)=>{
     const [dialogVisible,setDialogVisible] = useState(false);
@@ -34,7 +37,7 @@ const CitySelect:React.FC<Props>=(props)=>{
         console.log("dialogVisible: "+dialogVisible);
     }
     return(
-        <CitySelectContext.Provider value={{map}}>
+        <CitySelectContext.Provider value={{map,onChange: props.onChange}}>
         <div onClick={onClick}>{props.children}</div>
             {dialogVisible && <Dialog onClose={()=>setDialogVisible(false)} />}
 
@@ -44,9 +47,18 @@ const CitySelect:React.FC<Props>=(props)=>{
 }
 
 const Dialog:React.FC<{onClose:()=>void}>=(props)=>{
-    const {map} = useContext(CitySelectContext)
+    const {map,onChange} = useContext(CitySelectContext)
+    console.log("map:  map是个对象");
     console.log(map);
+
+    const cityList = (Object.entries(map).sort((a,b)=>a[0].charCodeAt(0)-b[0].charCodeAt(0)))
+    console.log("cityList: cityList是个数组 ");
+    console.log(cityList);
+
     const indxList = Object.keys(map).sort();
+    const onClick = (city:string)=>{
+           onChange(city);
+    }
     return ReactDOM.createPortal(
         (<div className="fui-citySelect-dialog"
               onClick={props.onClose}
@@ -61,6 +73,18 @@ const Dialog:React.FC<{onClose:()=>void}>=(props)=>{
                 {indxList.map(a=><li key={a}>{a}</li>)}
             </ol>
             <div className="cityList">所有城市</div>
+            {cityList.map(([letter, list]) => {
+                return (
+                    <div key={letter} className="fui-citySelect-citySection">
+                        <h4 data-letter={letter}>{letter}</h4>
+                        {list.map(city =>
+                            <div className="fui-citySelect-cityName" key={city}
+                                 onClick={() => onClick(city)}
+                            >{city}</div>
+                        )}
+                    </div>
+                );
+            })}
         </div>),document.body)
 
 }
@@ -84,9 +108,7 @@ const CurrentLocation:React.FC = ()=>{
         xhr.send()
     },[]);
     return (
-        <div className="currentCity">
-            当前城市：{city}
-        </div>
+        <div className="currentCity">当前城市：{city}</div>
     );
 }
 

@@ -1,29 +1,22 @@
-import React, {useState} from "react";
-import Dialog from "./dialog";
+import React from "react";
+import  { modal} from "./dialog";
 
-const  DialogExample2= () => {
-    const [y, setY] = useState(false)
 
+ const  DialogExample2= () => {
+
+    const openModal = () => {
+        //函数返回操作这个函数内部变量的api
+        const Close = modal(<h1>你好
+            <button onClick={() => {
+                Close()
+            }}>close</button>
+        </h1>);
+    }
     return (
         <div>
-
             <div>
                 <h1>example 2</h1>
-                <button onClick={() => setY(!y)}>click</button>
-                <Dialog visible={y} closeOnClickMask={true} buttons={
-                    [
-                        <button onClick={() => {
-                            setY(false);
-                        }}>1</button>,
-                        <button onClick={() => {
-                            setY(false);
-                        }}>2</button>
-                    ]
-                } onClose={() => {
-                    setY(false);
-                }}>
-                    <strong>hi</strong>
-                </Dialog>
+                <button onClick={openModal}>modal</button>
             </div>
 
         </div>

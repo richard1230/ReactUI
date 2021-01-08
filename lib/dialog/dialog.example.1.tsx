@@ -1,30 +1,24 @@
-import React, {useState} from "react";
-import Dialog from "./dialog";
+import React from "react";
+import  {alert, confirm} from "./dialog";
 
-const  DialogExample1 = () => {
-    const [x, setX] = useState(false)
+ const  DialogExample1= () => {
 
     return (
         <div>
-            <div style={{position: 'relative', zIndex: 10, }}>
+            <div>
                 <h1>example 1</h1>
-                <button onClick={() => setX(!x)}>click</button>
-                <Dialog visible={x} buttons={
-                    [
-                        <button onClick={() => {
-                            setX(false);
-                        }}>1</button>,
-                        <button onClick={() => {
-                            setX(false);
-                        }}>2</button>
-                    ]
-                } onClose={() => {
-                    setX(false);
-                }}>
-                    <strong>hi</strong>
-                </Dialog>
+                <button onClick={() => alert('1')}>alert</button>
+                <button onClick={() => confirm('1', () => {
+                    console.log('点击了yes');
+                }, () => {
+                    console.log('点击了no');
+                })}
+                >confirm
+                </button>
             </div>
+
         </div>
+
     )
 }
 

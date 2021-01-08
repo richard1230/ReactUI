@@ -60,12 +60,8 @@ const Validator = (formValue: FormValue, rules: FormRules, callback: (errors: an
         }
     });
 
-    // console.log("errors:");
-    // console.log(errors);
 
     const flattenErrors = flat<[string, OneError]>(Object.keys(errors).map<[string, OneError][]>(key =>
-        //errors[key]==>[Promise, Promise],这里的key就是password;
-        //这里还可以简化(主要是上面的泛型可以省掉)
         errors[key].map<[string, OneError]>(error => [key, error])
     ));
     const newPromises = flattenErrors.map(

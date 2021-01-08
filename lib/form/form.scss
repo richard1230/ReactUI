@@ -1,27 +1,29 @@
-.fui-form{
+.fui-form {
 
-  &-table{
+  &-table {
     border-collapse: collapse;
   }
 
-  &-label{
+  &-label {
     line-height: 32px;
   }
-  &-td{
+
+  &-td {
     margin-top: 0px;
     margin-bottom: 8px;
     vertical-align: top;
     //position: relative;
   }
 
-  &-tr:last-child &-td{
+  &-tr:last-child &-td {
     padding-bottom: 0;
   }
-  &-td + &-td{
+
+  &-td + &-td {
     padding-left: 16px;
   }
 
-  &-error{
+  &-error {
     color: red;
     font-size: 0.8em;
     margin-top: 4px;

@@ -30,7 +30,6 @@ const FormExample: React.FunctionComponent = () => {
 
     const [fields] = useState([
         {name: "username", label: "你的用户名", input: {type: 'text'}},
-        // {name: 'image', label: '头像', input: {type: 'text'}},
         {name: "password", label: '密码', input: {type: 'password'}},
     ])
 

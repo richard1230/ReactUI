@@ -15,7 +15,7 @@ interface Props {
     onSubmit: React.FormEventHandler;
     onChange: (value: FormValue) => void;
     errors: { [K: string]: string[] };
-    errorsDisplayMode?:'first' | 'all';
+    errorsDisplayMode?: 'first' | 'all';
     transformError?: (message: string) => string;
 }
 
@@ -61,7 +61,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
                             <div className="fui-form-error">
                                 {
                                     props.errors[f.name] ?
-                                        (props.errorsDisplayMode ==='first' ?
+                                        (props.errorsDisplayMode === 'first' ?
                                             transformError!(props.errors[f.name][0]) : props.errors[f.name].map(transformError!).join()) :
                                         <span>&nbsp;</span>
                                 }
@@ -81,7 +81,7 @@ const Form: React.FunctionComponent<Props> = (props) => {
         </form>
     )
 }
-Form.defaultProps={
-    errorsDisplayMode:'first',
+Form.defaultProps = {
+    errorsDisplayMode: 'first',
 }
 export default Form;

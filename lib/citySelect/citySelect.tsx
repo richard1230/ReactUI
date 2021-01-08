@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 import pinyin from 'tiny-pinyin';
 
@@ -11,10 +11,10 @@ interface Props {
 interface Context {
    map: {[key:string]:string[]};
     onChange:(p1:string)=>void;
-
+    setDialogVisible:Dispatch<SetStateAction<boolean>>
 }
 
-const CitySelectContext = React.createContext<Context >({map:{},onChange:(p1:string)=>{}})
+const CitySelectContext = React.createContext<Context >({map:{},onChange:(p1:string)=>{},setDialogVisible:()=>{}})
 
 const CitySelect:React.FC<Props>=(props)=>{
     const [dialogVisible,setDialogVisible] = useState(false);
@@ -37,7 +37,7 @@ const CitySelect:React.FC<Props>=(props)=>{
         console.log("dialogVisible: "+dialogVisible);
     }
     return(
-        <CitySelectContext.Provider value={{map,onChange: props.onChange}}>
+        <CitySelectContext.Provider value={{map,onChange: props.onChange,setDialogVisible}}>
         <div onClick={onClick}>{props.children}</div>
             {dialogVisible && <Dialog onClose={()=>setDialogVisible(false)} />}
 
@@ -59,18 +59,24 @@ const Dialog:React.FC<{onClose:()=>void}>=(props)=>{
     const onClick = (city:string)=>{
            onChange(city);
     }
+    const Seecity=(city:string)=>{
+        console.log("city: ");
+        console.log(city);
+        console.log("document:...");
+       const ele= document.querySelector('[data-letter='+CSS.escape(city)+']');
+        ele!.scrollIntoView()
+    }
     return ReactDOM.createPortal(
         (<div className="fui-citySelect-dialog"
-              onClick={props.onClose}
         >
             <header>
-                <span className="icon">&lt;</span>
+                <span className="icon" onClick={ props.onClose}>&lt;</span>
                 <span>城市选择</span>
             </header>
             <CurrentLocation/>
             <h2>全部城市</h2>
             <ol className="fui-citySelect-index">
-                {indxList.map(a=><li key={a}>{a}</li>)}
+                {indxList.map(a=><li onClick={()=>Seecity(a)} key={a}>{a}</li>)}
             </ol>
             <div className="cityList">所有城市</div>
             {cityList.map(([letter, list]) => {

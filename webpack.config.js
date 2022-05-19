@@ -14,7 +14,7 @@ module.exports = {
     //__dirname表示当前目录,dist是我们要去的目录
     path: path.resolve(__dirname, 'dist/lib'),
     library: 'FUI',
-    //输出格式
+    //输出格式，umd是兼容性最好的 amd--->浏览器, commonjs-->nodejs
     libraryTarget: 'umd',
   },
   module: {

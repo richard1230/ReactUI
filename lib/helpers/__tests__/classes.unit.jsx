@@ -1,6 +1,7 @@
 import classes, {scopedClassMaker} from '../classes'
 
-describe('test classes', () => {
+describe('test classes',
+  () => {
     it('should 接受一个 className ', () => {
         const result = classes('a')
         expect(result).toEqual('a')
